@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C4956A"/>
+      <stop offset="100%" style="stop-color:#7A9E77"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="400" rx="60" fill="#FDFBF7"/>
+  <!-- Decorative circle -->
+  <circle cx="200" cy="180" r="100" fill="none" stroke="url(#g1)" stroke-width="3" opacity="0.3"/>
+  <!-- X mark -->
+  <g transform="translate(200,170)">
+    <line x1="-45" y1="-45" x2="45" y2="45" stroke="url(#g1)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="45" y1="-45" x2="-45" y2="45" stroke="url(#g1)" stroke-width="14" stroke-linecap="round"/>
+  </g>
+  <!-- Text -->
+  <text x="200" y="310" text-anchor="middle" font-family="system-ui,sans-serif" font-size="48" font-weight="800" fill="#3D3429" letter-spacing="8">XUSN</text>
+  <!-- Subtitle dot -->
+  <circle cx="200" cy="340" r="4" fill="#C4956A"/>
+</svg>
