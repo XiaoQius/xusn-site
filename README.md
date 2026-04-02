@@ -1,10 +1,6 @@
-<p align="center">
-  <img src="logo.svg" alt="XUSN" width="120">
-</p>
+# XUSN 个人网站
 
-<h1 align="center">XUSN 个人网站</h1>
-
-<p align="center">绪深的个人主页 + 后台管理系统</p>
+绪深的个人主页 + 后台管理系统。
 
 ## 功能
 
