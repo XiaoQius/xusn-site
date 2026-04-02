@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>后台管理 - XUSN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=ZCOOL+QingKe+HuangYou&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#FDFBF7;background-image:radial-gradient(at 0% 0%,rgba(226,232,220,0.3) 0px,transparent 50%),radial-gradient(at 100% 100%,rgba(242,230,224,0.3) 0px,transparent 50%);color:#3D3429;font-family:'Varela Round','ZCOOL QingKe HuangYou','PingFang SC','Microsoft YaHei',sans-serif;letter-spacing:0.04em;min-height:100vh}
+.glass-card{background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);border:2px solid rgba(255,255,255,0.9);box-shadow:0 8px 32px rgba(0,0,0,0.04)}
+.title-font{font-family:'ZCOOL QingKe HuangYou','Varela Round',sans-serif;font-weight:400}
+input,textarea,select{width:100%;padding:12px 14px;font-family:inherit;font-size:.95rem;font-weight:700;border:2px solid #E8E0D5;border-radius:1rem;background:rgba(255,255,255,0.8);transition:all 0.3s ease;color:#3D3429}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#C4956A;box-shadow:0 0 0 3px rgba(196,149,106,0.15);background:#fff}
+textarea{resize:vertical}
+label{font-weight:700;display:block;margin-bottom:6px;font-size:.9rem;color:#5C4F42}
+.btn{display:inline-block;padding:10px 20px;border-radius:2rem;font-weight:700;border:2px solid transparent;cursor:pointer;font-family:inherit;font-size:.85rem;transition:all 0.3s ease;letter-spacing:0.05em;outline:none;-webkit-tap-highlight-color:transparent}
+.btn:focus{outline:none;box-shadow:none}
+.btn-primary{background:#5C4F42;color:#fff}.btn-primary:hover{background:#3D3429;transform:translateY(-2px);box-shadow:0 8px 20px rgba(61,52,41,0.15)}
+.btn-sage{background:#7A9E77;color:#fff}.btn-sage:hover{background:#5E7A5A;transform:translateY(-2px)}
+.btn-clay{background:#C4956A;color:#fff}.btn-clay:hover{background:#A67B52;transform:translateY(-2px)}
+.btn-danger{background:#ef4444;color:#fff}.btn-danger:hover{background:#dc2626;transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:#5C4F42;border-color:#E8E0D5}.btn-ghost:hover{background:#F5F1EA;border-color:#C4956A}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at 30% 20%,rgba(122,158,119,.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(196,149,106,.08) 0%,transparent 60%)}
+.login-card{max-width:420px;width:100%;text-align:center;padding:48px 40px;border-radius:2rem}
+.login-card h1{font-size:2.2rem;margin-bottom:6px;color:#3D3429}
+.login-card .sub{font-size:.9rem;opacity:.4;margin-bottom:32px}
+.login-card .field{margin-bottom:16px;text-align:left}
+.login-card .btn{width:100%;text-align:center;padding:14px;font-size:1rem;margin-top:8px;border-radius:1.5rem}
+.login-err{color:#ef4444;font-weight:700;margin-top:12px;font-size:.9rem}
+nav{position:fixed;top:12px;left:0;right:0;z-index:50;padding:0 12px}
+@media(max-width:480px){nav{padding:0 8px;top:8px}}
+@media(max-width:360px){nav{padding:0 6px;top:6px}}
+nav .glass-card{box-shadow:0 8px 32px rgba(0,0,0,.06);transition:box-shadow .3s}
+nav .glass-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.1)}
+nav div[class*="bg-warm"] a,nav div[style*="background:rgba(242"] a,nav div[style*="background:rgba(242"] a{transition:all .2s}
+nav div[style*="background:rgba(242"] a:hover,nav div[style*="background:rgba(242"] a.active{background:rgba(255,255,255,.9)!important;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+nav div[style*="background:rgba(242"] a.active{background:#C4956A!important;color:#fff!important}
+.admin-wrap{max-width:900px;margin:0 auto;padding:12px 12px 60px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:768px){.form-grid{grid-template-columns:1fr}}
+@media(max-width:480px){
+  .admin-wrap{padding:8px 8px 40px}
+  nav{padding:0 8px!important}
+  .glass-card[style*="padding:28px"]{padding:18px!important}
+  .stat-card .num{font-size:1.5rem}
+  .stitle{font-size:1.1rem}
+}
+@media(max-width:360px){
+  .admin-wrap{padding:6px 6px 30px}
+  nav{padding:0 6px!important}
+  nav div[style*="padding"]{padding:6px!important}
+  .glass-card[style*="padding:28px"]{padding:14px!important}
+  .form-grid{gap:10px}
+}
+.form-grid .full{grid-column:1/-1}
+.stitle{display:inline-block;font-size:1.3rem;margin-bottom:20px;padding:4px 0}
+.stitle::after{content:'';display:block;width:100%;height:3px;background:linear-gradient(to right,#C4956A,#7A9E77);border-radius:2px;margin-top:4px}
+nav div[style*="overflow-x"]::-webkit-scrollbar{display:none}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:1rem;margin-bottom:10px;background:rgba(255,255,255,0.5);border:2px solid rgba(255,255,255,0.8);transition:all 0.3s ease}
+.row:hover{background:rgba(255,255,255,0.8);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.04)}
+.row .name{flex:1;font-weight:700;font-size:.95rem}
+.row .meta{font-size:.8rem;opacity:.5;margin-left:8px}
+.row .actions{display:flex;gap:6px}
+.modal{display:none;position:fixed;inset:0;background:rgba(61,52,41,0.5);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.modal .glass-card{max-width:520px;width:100%;padding:32px;max-height:85vh;overflow-y:auto}
+.modal h2{font-size:1.3rem;margin-bottom:20px}
+.modal .field{margin-bottom:14px}
+.modal .btns{display:flex;gap:10px;margin-top:20px}
+.modal .btns .btn{flex:1;text-align:center}
+.hidden{display:none}
+.hbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hbar .count{font-weight:700;font-size:.9rem;opacity:.5}
+.stat-card{text-align:center;padding:20px 16px;background:rgba(255,255,255,.7);border-radius:1.5rem;border:2px solid rgba(255,255,255,.8);transition:all .3s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.stat-card .icon{font-size:1.4rem;margin-bottom:6px}
+.stat-card .num{font-size:2rem;font-weight:900}
+.stat-card .label{font-size:.78rem;opacity:.45;margin-top:2px;font-weight:700}
+.pulse-dot{display:inline-block;width:10px;height:10px;background:#7A9E77;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 24px;border-radius:1rem;font-weight:700;font-size:.9rem;z-index:999;transition:all 0.3s ease;backdrop-filter:blur(10px);background:rgba(255,255,255,0.9);border:2px solid #E8E0D5;box-shadow:0 8px 32px rgba(0,0,0,0.08)}
+.toast.fade{opacity:0;transform:translateY(10px)}
+.tag-input-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px;border:2px solid #E8E0D5;border-radius:1rem;background:rgba(255,255,255,0.8);min-height:48px;cursor:text;transition:all 0.3s ease}
+.tag-input-wrap:focus-within{border-color:#C4956A;box-shadow:0 0 0 3px rgba(196,149,106,0.15);background:#fff}
+.tag-input-wrap .tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:2rem;background:#C4956A;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;transition:all 0.2s ease}
+.tag-input-wrap .tag:hover{background:#A67B52}
+.tag-input-wrap input{border:none;outline:none;flex:1;min-width:80px;font-size:.85rem;font-weight:700;background:transparent;padding:4px}
+.preview-card{border-radius:1rem;overflow:hidden;height:100px;background:#F5F1EA;margin-top:4px}
+.preview-card img{width:100%;height:100%;object-fit:cover}
+#admin-page nav .wrap{border-radius:999px}
+
+/* === THEME: BRUTAL === */
+body.theme-brutal{background:#f0ece4;background-image:none;color:#111}
+body.theme-brutal .glass-card{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;border:3px solid #111;border-radius:0!important;box-shadow:5px 5px 0 #111}
+body.theme-brutal nav .glass-card{background:rgba(240,236,228,.88)!important;border-color:#111;border-radius:0!important;box-shadow:5px 5px 0 #111!important}
+body.theme-brutal nav div[style*="background:rgba(242"]{background:rgba(240,236,228,.8)!important}
+body.theme-brutal nav div[style*="background:rgba(242"] a{border:2px solid transparent;border-radius:0!important;font-family:monospace}
+body.theme-brutal nav div[style*="background:rgba(242"] a.active{background:#111!important;color:#f0ece4!important;border-color:#111!important}
+body.theme-brutal nav div[style*="background:rgba(242"] a:hover{background:#111!important;color:#f0ece4!important}
+body.theme-brutal .title-font,body.theme-brutal h1,body.theme-brutal h2,body.theme-brutal h3,body.theme-brutal .stitle{font-family:'SF Mono','Fira Code','JetBrains Mono','Consolas',monospace!important;letter-spacing:-0.02em!important}
+body.theme-brutal .stitle::after{background:#111!important}
+body.theme-brutal .glass-card fieldset{border:2px solid #111;border-radius:0}
+body.theme-brutal .glass-card fieldset legend{background:#111;color:#f0ece4;font-family:monospace;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+body.theme-brutal input,body.theme-brutal textarea,body.theme-brutal select{border:2px solid #111!important;border-radius:0!important}
+body.theme-brutal input:focus,body.theme-brutal textarea:focus,body.theme-brutal select:focus{box-shadow:3px 3px 0 #111}
+body.theme-brutal .btn{border-radius:0!important;font-family:monospace!important;text-transform:uppercase;letter-spacing:.05em}
+body.theme-brutal .btn-clay{background:#111!important;color:#f0ece4!important;border:2px solid #111!important;box-shadow:3px 3px 0 #333}
+body.theme-brutal .btn-clay:hover{background:#c0392b!important;box-shadow:3px 3px 0 #333}
+body.theme-brutal .btn-sage{background:#fff!important;color:#111!important;border:2px solid #111!important;box-shadow:3px 3px 0 #111}
+body.theme-brutal .btn-sage:hover{background:#111!important;color:#fff!important;box-shadow:none}
+body.theme-brutal .btn-ghost{background:transparent!important;color:#111!important;border:2px solid #111!important;border-radius:0!important;box-shadow:none}
+body.theme-brutal .btn-ghost:hover{background:#111!important;color:#fff!important}
+body.theme-brutal .btn-danger{background:#c0392b!important;color:#fff!important;border:2px solid #111!important;box-shadow:3px 3px 0 #111}
+body.theme-brutal .btn-danger:hover{background:#e74c3c!important}
+body.theme-brutal .pill{border-radius:0!important;border:2px solid #111}
+body.theme-brutal .pill.active{background:#111!important;color:#fff!important}
+body.theme-brutal .count{font-family:monospace;font-weight:900;color:#111}
+body.theme-brutal .toast{border-radius:0!important;border:2px solid #111;box-shadow:4px 4px 0 #111;font-family:monospace}
+body.theme-brutal .stat-box{border-radius:0!important;border:2px solid #111;box-shadow:3px 3px 0 #111}
+body.theme-brutal .stat-card{border-radius:0!important;border:2px solid #111;box-shadow:3px 3px 0 #111}
+body.theme-brutal .stat-card:hover{box-shadow:5px 5px 0 #111}
+body.theme-brutal .bar-inner{border-radius:0!important}
+body.theme-brutal .visitor-item{border-bottom:1px solid #111}
+body.theme-brutal .avatar-preview{border-radius:0!important;border:3px solid #111}
+body.theme-brutal .tech-input{border-radius:0!important;border:2px solid #111}
+body.theme-brutal .tab-btn{border-radius:0!important}
+body.theme-brutal .tab-btn.active{background:#111!important;color:#fff!important;border-radius:0!important}
+body.theme-brutal .progress-bar{border-radius:0!important;border:2px solid #111}
+body.theme-brutal .progress-fill{border-radius:0!important;background:#111!important}
+
+/* === THEME: HAND-DRAWN === */
+body.theme-sketch{background:#fef9ef;background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(139,119,101,.07) 31px,rgba(139,119,101,.07) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(139,119,101,.05) 31px,rgba(139,119,101,.05) 32px);color:#3d3429;font-family:'Caveat','ZCOOL QingKe HuangYou',cursive!important}
+body.theme-sketch .title-font,body.theme-sketch h1,body.theme-sketch h2,body.theme-sketch h3,body.theme-sketch .stitle{font-family:'Caveat','ZCOOL QingKe HuangYou',cursive!important;font-weight:700!important}
+body.theme-sketch .glass-card{background:rgba(255,255,255,.85)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border:2.5px solid #3d3429!important;border-radius:2px 8px 2px 12px!important;box-shadow:3px 3px 0 rgba(61,52,41,.15)!important;transform:rotate(-.3deg)}
+body.theme-sketch .glass-card:nth-child(even){transform:rotate(.2deg)}
+body.theme-sketch nav .glass-card{transform:none!important;border-radius:999px!important;border:2.5px solid #3d3429!important}
+body.theme-sketch input,body.theme-sketch textarea,body.theme-sketch select{border:2px dashed #8b7765!important;border-radius:2px 6px 2px 8px!important;background:rgba(255,255,255,.9)!important;font-family:'Caveat',cursive!important;font-size:1.05rem!important}
+body.theme-sketch input:focus,body.theme-sketch textarea:focus,body.theme-sketch select:focus{border-style:solid!important;border-color:#c4956a!important;box-shadow:none!important}
+body.theme-sketch label{font-family:'Caveat',cursive!important;font-size:1.05rem!important;color:#5c4f42}
+body.theme-sketch .btn{border-radius:2px 8px 2px 12px!important;font-family:'Caveat',cursive!important;font-size:1rem!important;letter-spacing:0;border:2.5px solid #3d3429!important;position:relative}
+body.theme-sketch .btn-primary{background:#3d3429!important;color:#fef9ef!important}
+body.theme-sketch .btn-primary:hover{background:#5c4f42!important;transform:translateY(-2px) rotate(-1deg)}
+body.theme-sketch .btn-sage{background:#7a9e77!important;color:#fff!important}
+body.theme-sketch .btn-sage:hover{background:#5e7a5a!important;transform:translateY(-2px) rotate(1deg)}
+body.theme-sketch .btn-clay{background:#c4956a!important;color:#fff!important}
+body.theme-sketch .btn-clay:hover{background:#a67b52!important;transform:translateY(-2px) rotate(-1deg)}
+body.theme-sketch .btn-ghost{background:transparent!important;color:#5c4f42!important;border:2px dashed #8b7765!important}
+body.theme-sketch .btn-ghost:hover{background:rgba(139,119,101,.1)!important;border-style:solid!important}
+body.theme-sketch .btn-danger{background:#ef4444!important;color:#fff!important}
+body.theme-sketch .stitle::after{background:repeating-linear-gradient(90deg,#c4956a 0,#c4956a 8px,transparent 8px,transparent 12px)!important;height:2.5px!important;border-radius:0!important}
+body.theme-sketch .stat-card{border:2.5px solid #3d3429!important;border-radius:2px 8px 2px 12px!important;background:rgba(255,255,255,.85)!important;box-shadow:3px 3px 0 rgba(61,52,41,.12)!important}
+body.theme-sketch .stat-card:hover{transform:translateY(-3px) rotate(-.5deg)!important}
+body.theme-sketch .stat-card .num{font-family:'Caveat',cursive!important}
+body.theme-sketch .row{border:2px dashed rgba(139,119,101,.3)!important;border-radius:2px 6px 2px 8px!important;background:rgba(255,255,255,.6)!important}
+body.theme-sketch .row:hover{border-style:solid!important;border-color:#8b7765!important}
+body.theme-sketch .toast{border:2.5px solid #3d3429!important;border-radius:2px 8px 2px 12px!important;font-family:'Caveat',cursive!important;box-shadow:3px 3px 0 rgba(61,52,41,.15)!important}
+body.theme-sketch .modal .glass-card{border-radius:4px 12px 4px 16px!important}
+body.theme-sketch .tag-input-wrap{border:2px dashed #8b7765!important;border-radius:2px 6px 2px 8px!important}
+body.theme-sketch .tag-input-wrap:focus-within{border-style:solid!important}
+body.theme-sketch .tag{border-radius:2px 6px 2px 8px!important;font-family:'Caveat',cursive!important}
+body.theme-sketch .preview-card{border:2px dashed #8b7765!important;border-radius:2px 6px 2px 8px!important}
+body.theme-sketch .avatar-preview{border:2.5px solid #3d3429!important;border-radius:50%!important}
+body.theme-sketch .hbar .count{font-family:'Caveat',cursive!important;font-size:1.05rem!important}
+body.theme-sketch .pulse-dot{animation:sketchPulse 2s infinite}
+@keyframes sketchPulse{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(.8) rotate(5deg)}}
+body.theme-sketch nav div[style*="background:rgba(242"]{background:rgba(254,249,239,.8)!important}
+body.theme-sketch nav div[style*="background:rgba(242"] a{font-family:'Caveat',cursive!important;font-size:.9rem!important;border-radius:2px 6px 2px 8px!important}
+body.theme-sketch nav div[style*="background:rgba(242"] a.active{background:#c4956a!important;color:#fff!important}
+body.theme-sketch nav div[style*="background:rgba(242"] a:hover{background:rgba(196,149,106,.15)!important}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-page" class="login-wrap">
+<div class="glass-card login-card">
+  <div style="font-size:3rem;margin-bottom:8px">🔐</div>
+  <h1 class="title-font">后台管理</h1>
+  <div class="sub rounded-text">XUSN Personal Website Admin</div>
+  <form id="lf">
+    <div class="field"><label>用户名</label><input id="lu" required></div>
+    <div class="field"><label>密码</label><input id="lp" type="password" required></div>
+    <button class="btn btn-primary" type="submit">登录 →</button>
+  </form>
+  <p id="le" class="login-err hidden"></p>
+</div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-page" class="hidden">
+
+<nav style="position:fixed;top:12px;left:0;right:0;z-index:50;padding:0 12px">
+<div style="max-width:900px;margin:0 auto">
+  <div class="glass-card" style="border-radius:999px;padding:6px 8px;display:flex;align-items:center;gap:6px;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:2px;background:rgba(242,230,224,.5);border-radius:999px;padding:3px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:1;min-width:0">
+      <a href="#sec-config" class="active" style="padding:6px 14px;border-radius:999px;font-weight:700;font-size:.78rem;text-decoration:none;color:#5C4F42;transition:all .2s;white-space:nowrap;cursor:pointer">🌐 配置</a>
+      <a href="#sec-stats" style="padding:6px 14px;border-radius:999px;font-weight:700;font-size:.78rem;text-decoration:none;color:#5C4F42;transition:all .2s;white-space:nowrap;cursor:pointer">📊 统计</a>
+      <a href="#sec-skills" style="padding:6px 14px;border-radius:999px;font-weight:700;font-size:.78rem;text-decoration:none;color:#5C4F42;transition:all .2s;white-space:nowrap;cursor:pointer">⚡ 技能</a>
+      <a href="#sec-projects" style="padding:6px 14px;border-radius:999px;font-weight:700;font-size:.78rem;text-decoration:none;color:#5C4F42;transition:all .2s;white-space:nowrap;cursor:pointer">💼 项目</a>
+      <a href="#sec-account" style="padding:6px 14px;border-radius:999px;font-weight:700;font-size:.78rem;text-decoration:none;color:#5C4F42;transition:all .2s;white-space:nowrap;cursor:pointer">🔐 账号</a>
+    </div>
+    <div style="display:flex;gap:3px;align-items:center;flex-shrink:0;padding-left:4px">
+      <a href="/" target="_blank" class="btn-ghost" style="border-radius:999px;font-size:.78rem;padding:6px 12px;text-decoration:none;color:#5C4F42;font-weight:700">🌐</a>
+      <button class="btn btn-danger" style="border-radius:999px;font-size:.75rem;padding:6px 14px" onclick="logout()">退出</button>
+    </div>
+  </div>
+</div>
+</nav>
+
+<div class="admin-wrap" style="padding-top:80px">
+
+  <!-- CONFIG -->
+  <div id="sec-config" class="stitle title-font" style="scroll-margin-top:70px">🌐 网站配置</div>
+  <div class="glass-card" style="padding:28px;border-radius:2rem;margin-bottom:28px">
+    <form id="cf" class="form-grid">
+      <div class="field"><label>名字</label><input name="name" data-c placeholder="绪深"></div>
+      <div class="field"><label>头衔</label><input name="title" data-c placeholder="高一学生"></div>
+      <div class="field full"><label>副标题</label><input name="subtitle" data-c placeholder="热爱编程 · 开源爱好者 · 终身学习者"></div>
+      <div class="field full"><label>自我介绍</label><textarea name="desc" rows="3" data-c placeholder="我是绪深，目前是一名高一学生..."></textarea></div>
+      <div class="field"><label>头像 URL</label><input name="avatar" data-c id="avatar-url" placeholder="https://q1.qlogo.cn/..."></div>
+      <div class="field" style="display:flex;flex-direction:column"><label>头像预览</label><div class="preview-card"><img id="avatar-preview" src="" onerror="this.parentElement.parentElement.style.display='none'"></div></div>
+      <div class="field"><label>邮箱</label><input name="email" data-c placeholder="un@xusn.dev"></div>
+      <div class="field"><label>GitHub</label><input name="github" data-c placeholder="https://github.com/XiaoQius"></div>
+      <div class="field"><label>个人网站</label><input name="website" data-c placeholder="https://xusn.cn"></div>
+      <div class="field"><label>所在地</label><input name="location" data-c placeholder="中国"></div>
+      <div class="field"><label>学历</label><input name="education" data-c placeholder="高一"></div>
+      <div class="field"><label>主题风格</label>
+        <select name="theme" data-c>
+          <option value="warm">🧁 温暖奶油风</option>
+          <option value="brutal">⬛ 粗野风 (Brutalist)</option>
+          <option value="sketch">✏️ 手绘风 (Sketch)</option>
+        </select>
+      </div>
+      <div class="field"><label>页脚文字</label><input name="footer" data-c placeholder="用温柔的方式改变世界 💛"></div>
+      <div class="field full"><button class="btn btn-sage" type="submit" style="width:100%;padding:14px;font-size:1rem">💾 保存配置</button></div>
+    </form>
+  </div>
+
+  <!-- STATS -->
+  <div id="sec-stats" class="stitle title-font" style="scroll-margin-top:70px">📊 访问统计</div>
+  <div class="glass-card" style="padding:28px;border-radius:2rem;margin-bottom:28px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div class="stat-card">
+        <div class="icon">👥</div>
+        <div class="num" style="color:#C4956A" id="stat-total">-</div>
+        <div class="label">总访客</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">📅</div>
+        <div class="num" style="color:#7A9E77" id="stat-today">-</div>
+        <div class="label">今日</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon"><span class="pulse-dot"></span></div>
+        <div class="num" style="color:#60A5FA" id="live-dot">LIVE</div>
+        <div class="label">实时</div>
+      </div>
+    </div>
+    <!-- 实时访客流 -->
+    <div style="margin-bottom:16px;padding:12px 16px;background:rgba(255,255,255,0.6);border-radius:1rem;max-height:140px;overflow-y:auto" id="live-feed">
+      <div style="font-size:.75rem;opacity:.3;text-align:center;padding:16px">等待访客…</div>
+    </div>
+    <div class="form-grid" style="gap:20px">
+      <div>
+        <h4 style="font-size:.9rem;font-weight:700;margin-bottom:10px;color:#5C4F42">📈 最近 7 天 <span style="font-weight:400;opacity:.4;font-size:.75rem" id="stat-pages"></span></h4>
+        <div id="trend-chart" style="display:flex;align-items:flex-end;gap:6px;height:80px"></div>
+      </div>
+      <div>
+        <h4 style="font-size:.9rem;font-weight:700;margin-bottom:10px;color:#5C4F42">🌐 浏览器</h4>
+        <div id="browser-chart"></div>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <h4 style="font-size:.9rem;font-weight:700;margin-bottom:10px;color:#5C4F42">⚡ Web Vitals</h4>
+      <div id="vitals-chart" style="display:flex;gap:12px;flex-wrap:wrap"></div>
+    </div>
+    <div style="margin-top:20px">
+      <h4 style="font-size:.9rem;font-weight:700;margin-bottom:10px;color:#5C4F42">🌍 访客地图</h4>
+      <div id="visitor-map" style="background:rgba(255,255,255,0.6);border-radius:1rem;padding:16px;min-height:200px;position:relative;overflow:hidden">
+        <div id="map-loading" style="text-align:center;padding:40px;opacity:.4">加载中…</div>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <h4 style="font-size:.9rem;font-weight:700;margin-bottom:10px;color:#5C4F42">🕐 最近访客</h4>
+      <div id="recent-visitors" style="max-height:200px;overflow-y:auto"></div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div id="sec-skills" class="stitle title-font" style="scroll-margin-top:70px">⚡ 技能管理</div>
+  <div class="glass-card" style="padding:28px;border-radius:2rem;margin-bottom:28px">
+    <div class="hbar"><span class="count" id="skill-count">0 项技能</span><button class="btn btn-clay" style="border-radius:999px" onclick="openSkill()">+ 添加技能</button></div>
+    <div id="sl"></div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div id="sec-projects" class="stitle title-font" style="scroll-margin-top:70px">💼 项目管理</div>
+  <div class="glass-card" style="padding:28px;border-radius:2rem;margin-bottom:28px">
+    <div class="hbar"><span class="count" id="proj-count">0 个项目</span><button class="btn btn-clay" style="border-radius:999px" onclick="openProj()">+ 添加项目</button></div>
+    <div id="pl"></div>
+  </div>
+
+  <!-- PASSWORD -->
+  <div id="sec-account" class="stitle title-font" style="scroll-margin-top:70px">🔐 修改账号</div>
+  <div class="glass-card" style="padding:28px;border-radius:2rem;margin-bottom:28px">
+    <form id="pwf" class="form-grid">
+      <div class="field full"><label>新用户名（留空不改）</label><input id="pw-user" placeholder="留空 = 保持不变"></div>
+      <div class="field"><label>当前密码</label><input id="pw-old" type="password" required></div>
+      <div class="field"><label>新密码（留空不改）</label><input id="pw-new" type="password" minlength="6" placeholder="留空 = 保持不变"></div>
+      <div class="field full"><button class="btn btn-sage" type="submit" style="width:100%;padding:14px;font-size:1rem">🔑 确认修改</button></div>
+    </form>
+  </div>
+
+</div>
+</div>
+
+<!-- SKILL MODAL -->
+<div class="modal" id="sm">
+<div class="glass-card">
+  <h2 class="title-font" id="sm-t">添加技能</h2>
+  <form id="sf">
+    <input type="hidden" id="si">
+    <div class="field"><label>技能名称</label><input id="sn" required></div>
+    <div class="field"><label>分类</label><select id="sc"><option>语言</option><option>前端</option><option>工具</option></select></div>
+    <div class="field"><label>熟练度 (0-100)</label><input id="slv" type="number" min="0" max="100" required></div>
+    <div class="btns"><button class="btn btn-sage" type="submit">💾 保存</button><button class="btn btn-ghost" type="button" onclick="closeM('sm')">取消</button></div>
+  </form>
+</div>
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal" id="pm">
+<div class="glass-card">
+  <h2 class="title-font" id="pm-t">添加项目</h2>
+  <form id="pf">
+    <input type="hidden" id="pi">
+    <div class="field"><label>项目名称</label><input id="pt" required></div>
+    <div class="field"><label>描述</label><textarea id="pd" rows="3" required></textarea></div>
+    <div class="field"><label>技术标签</label>
+      <div class="tag-input-wrap" id="ptags-wrap">
+        <input id="ptags-input" placeholder="输入后回车添加标签">
+      </div>
+      <div style="margin-top:4px;font-size:.75rem;opacity:.5">输入标签后按 Enter 添加，点击标签删除</div>
+    </div>
+    <div class="field"><label>缩略图 URL</label><input id="pthumb" placeholder="https://example.com/image.jpg"></div>
+    <div id="thumb-wrap" class="field hidden"><label>缩略图预览</label><div class="preview-card"><img id="thumb-prev"></div></div>
+    <div class="field"><label>主题色</label>
+      <select id="pc">
+        <option value="#FF6B6B">🔴 红色</option>
+        <option value="#7A9E77">🟢 绿色</option>
+        <option value="#FFE66D">🟡 黄色</option>
+        <option value="#8B5CF6">🟣 紫色</option>
+        <option value="#60A5FA">🔵 蓝色</option>
+        <option value="#C4956A">🟤 棕色</option>
+      </select>
+    </div>
+    <div class="field"><label>图标 (Font Awesome)</label><input id="pic" placeholder="fas fa-globe"></div>
+    <div class="field"><label>链接</label><input id="plk" placeholder="https://github.com/..."></div>
+    <div class="field"><label>排序 (越大越靠前)</label><input id="psort" type="number" value="0"></div>
+    <div class="btns"><button class="btn btn-sage" type="submit">💾 保存</button><button class="btn btn-ghost" type="button" onclick="closeM('pm')">取消</button></div>
+  </form>
+</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const H=()=>({'Content-Type':'application/json','Authorization':'Bearer '+localStorage.getItem('t')});
+let projTags=[];
+
+if(localStorage.getItem('t'))showAdmin().catch(()=>{localStorage.removeItem('t')});
+
+document.getElementById('lf').addEventListener('submit', async e=>{
+  e.preventDefault();
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:$('#lu').value,password:$('#lp').value})});
+    const d=await r.json();
+    if(r.ok){localStorage.setItem('t',d.token);showAdmin()}
+    else{$('#le').textContent=d.error;$('#le').classList.remove('hidden')}
+  }catch{$('#le').textContent='网络错误';$('#le').classList.remove('hidden')}
+});
+
+function logout(){localStorage.removeItem('t');location.reload()}
+async function showAdmin(){$('#login-page').classList.add('hidden');$('#admin-page').classList.remove('hidden');await Promise.all([loadConfig(),loadSkills(),loadProjects(),loadStats()]);connectSSE()}
+
+function showToast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>{t.classList.add('fade');setTimeout(()=>t.remove(),300)},2000)}
+
+// CONFIG
+async function loadConfig(){
+  const d=await(await fetch('/api/site')).json();
+  document.querySelectorAll('[data-c]').forEach(el=>{if(d.config[el.name])el.value=d.config[el.name]});
+  updateAvatarPreview();
+}
+document.getElementById('cf').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const b={};document.querySelectorAll('[data-c]').forEach(el=>b[el.name]=el.value);
+  const r=await fetch('/api/admin/config',{method:'PUT',headers:H(),body:JSON.stringify(b)});
+  if(r.ok)showToast('✅ 配置已保存');
+});
+$('#avatar-url').addEventListener('input',updateAvatarPreview);
+function updateAvatarPreview(){const url=$('#avatar-url').value;if(url){$('#avatar-preview').src=url}}
+
+// SKILLS
+async function loadSkills(){
+  const s=await(await fetch('/api/admin/skills',{headers:H()})).json();
+  $('#skill-count').textContent=s.length+' 项技能';
+  const colors=['#C4956A','#7A9E77','#60A5FA','#A78BFA','#FB923C'];
+  $('#sl').innerHTML=s.map(i=>`<div class="row"><span style="width:10px;height:10px;background:${colors[i.id%colors.length]};border-radius:50%;flex-shrink:0"></span><span class="name">${i.name}<span class="meta">${i.category} · ${i.level}%</span></span><div class="actions"><button class="btn btn-ghost" style="padding:4px 12px;font-size:.75rem;border-radius:1rem" onclick="editSkill(${i.id},'${i.name}','${i.category}',${i.level})">编辑</button><button class="btn btn-ghost" style="padding:4px 12px;font-size:.75rem;border-radius:1rem;color:#ef4444" onclick="delSkill(${i.id})">删除</button></div></div>`).join('');
+}
+function openSkill(){$('#si').value='';$('#sn').value='';$('#sc').value='语言';$('#slv').value='70';$('#sm-t').textContent='添加技能';$('#sm').classList.add('on')}
+function editSkill(id,n,c,l){$('#si').value=id;$('#sn').value=n;$('#sc').value=c;$('#slv').value=l;$('#sm-t').textContent='编辑技能';$('#sm').classList.add('on')}
+function closeM(id){$('#'+id).classList.remove('on')}
+document.getElementById('sf').addEventListener('submit', async e=>{
+  e.preventDefault();const id=$('#si').value,b={name:$('#sn').value,category:$('#sc').value,level:+$('#slv').value};
+  await fetch(id?'/api/admin/skills/'+id:'/api/admin/skills',{method:id?'PUT':'POST',headers:H(),body:JSON.stringify(b)});
+  closeM('sm');loadSkills();showToast('✅ 技能已保存');
+});
+async function delSkill(id){if(!confirm('确定删除？'))return;await fetch('/api/admin/skills/'+id,{method:'DELETE',headers:H()});loadSkills();showToast('🗑️ 已删除')}
+
+// PROJECT TAGS
+function renderTags(){
+  const wrap=$('#ptags-wrap');
+  wrap.querySelectorAll('.tag').forEach(t=>t.remove());
+  const input=$('#ptags-input');
+  projTags.forEach((tag,i)=>{
+    const el=document.createElement('span');
+    el.className='tag';el.textContent=tag;
+    el.onclick=()=>{projTags.splice(i,1);renderTags()};
+    wrap.insertBefore(el,input);
+  });
+}
+$('#ptags-input').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim();if(v&&!projTags.includes(v)){projTags.push(v);renderTags()}e.target.value=''}
+  if(e.key==='Backspace'&&!e.target.value&&projTags.length){projTags.pop();renderTags()}
+});
+$('#ptags-wrap').addEventListener('click',()=>$('#ptags-input').focus());
+
+// PROJECTS
+async function loadProjects(){
+  const ps=await(await fetch('/api/admin/projects',{headers:H()})).json();
+  $('#proj-count').textContent=ps.length+' 个项目';
+  $('#pl').innerHTML=ps.map(p=>{
+    const tags=(p.tags||[]).map(t=>`<span style="font-size:.7rem;padding:2px 8px;border-radius:2rem;background:rgba(196,149,106,0.15);color:#A67B52">${t}</span>`).join('');
+    return`<div class="row" style="flex-wrap:wrap"><span style="width:10px;height:10px;background:${p.color||'#C4956A'};border-radius:50%;flex-shrink:0"></span><span class="name">${p.title}</span><div style="margin-left:auto">${tags}</div><div class="actions" style="margin-left:8px"><button class="btn btn-ghost" style="padding:4px 12px;font-size:.75rem;border-radius:1rem" onclick="editProj(${p.id})">编辑</button><button class="btn btn-ghost" style="padding:4px 12px;font-size:.75rem;border-radius:1rem;color:#ef4444" onclick="delProj(${p.id})">删除</button></div></div>`;
+  }).join('');
+}
+function openProj(){
+  $('#pi').value='';$('#pt').value='';$('#pd').value='';$('#pthumb').value='';$('#pc').value='#FF6B6B';$('#pic').value='fas fa-globe';$('#plk').value='';$('#psort').value='0';
+  projTags=[];renderTags();$('#thumb-wrap').classList.add('hidden');$('#pm-t').textContent='添加项目';$('#pm').classList.add('on');
+}
+async function editProj(id){
+  const ps=await(await fetch('/api/admin/projects',{headers:H()})).json();
+  const p=ps.find(x=>x.id===id);if(!p)return;
+  $('#pi').value=p.id;$('#pt').value=p.title;$('#pd').value=p.desc;$('#pthumb').value=p.thumbnail||'';$('#pc').value=p.color;$('#pic').value=p.icon;$('#plk').value=p.link;$('#psort').value=p.sort||0;
+  projTags=[...(p.tags||[])];renderTags();
+  if(p.thumbnail){$('#thumb-prev').src=p.thumbnail;$('#thumb-wrap').classList.remove('hidden')}
+  else{$('#thumb-wrap').classList.add('hidden')}
+  $('#pm-t').textContent='编辑项目';$('#pm').classList.add('on');
+}
+$('#pthumb').addEventListener('input',function(){if(this.value){$('#thumb-prev').src=this.value;$('#thumb-wrap').classList.remove('hidden')}else{$('#thumb-wrap').classList.add('hidden')}});
+document.getElementById('pf').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const id=$('#pi').value,b={title:$('#pt').value,desc:$('#pd').value,color:$('#pc').value,icon:$('#pic').value,tags:projTags,link:$('#plk').value,thumbnail:$('#pthumb').value,sort:+$('#psort').value};
+  await fetch(id?'/api/admin/projects/'+id:'/api/admin/projects',{method:id?'PUT':'POST',headers:H(),body:JSON.stringify(b)});
+  closeM('pm');loadProjects();showToast('✅ 项目已保存');
+});
+async function delProj(id){if(!confirm('确定删除？'))return;await fetch('/api/admin/projects/'+id,{method:'DELETE',headers:H()});loadProjects();showToast('🗑️ 已删除')}
+
+// STATS
+async function loadStats(){
+  try{
+    const [s,map]=await Promise.all([
+      (await fetch('/api/admin/stats',{headers:H()})).json(),
+      fetch('/api/admin/visitors/map',{headers:H()}).then(r=>r.json()).catch(()=>({locations:[]}))
+    ]);
+    $('#stat-total').textContent=s.total;
+    $('#stat-today').textContent=s.today;
+    $('#stat-pages').textContent=s.pages.length+' 页面';
+    // 趋势图
+    const maxC=Math.max(...s.trend.map(t=>t.c),1);
+    $('#trend-chart').innerHTML=s.trend.map(t=>{
+      const h=Math.max(8,Math.round(t.c/maxC*70));
+      const label=t.day.slice(5);
+      return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:${h}px;background:linear-gradient(to top,#C4956A,#7A9E77);border-radius:4px 4px 0 0;transition:height 0.5s"></div><span style="font-size:.6rem;opacity:.4">${label}</span></div>`;
+    }).join('')||'<span style="opacity:.3">暂无数据</span>';
+    // 浏览器
+    const colors=['#C4956A','#7A9E77','#60A5FA','#A78BFA','#FB923C'];
+    $('#browser-chart').innerHTML=s.browsers.map((b,i)=>{
+      const pct=Math.round(b.c/s.total*100);
+      return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:8px;height:8px;background:${colors[i%5]};border-radius:50%;flex-shrink:0"></span><span style="font-size:.85rem;font-weight:700;width:60px">${b.browser}</span><div style="flex:1;height:6px;background:#E8E0D5;border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${colors[i%5]};border-radius:3px"></div></div><span style="font-size:.75rem;opacity:.5;width:32px;text-align:right">${pct}%</span></div>`;
+    }).join('')||'<span style="opacity:.3">暂无数据</span>';
+    // Web Vitals
+    const thresholds={LCP:[2500,4000,'ms'],FID:[100,300,'ms'],CLS:[0.1,0.25,'']};
+    $('#vitals-chart').innerHTML=s.vitals.map(v=>{
+      const t=thresholds[v.name]||[1000,3000,'ms'];
+      const color=v.avg<=t[0]?'#7A9E77':v.avg<=t[1]?'#FFE66D':'#ef4444';
+      return`<div style="padding:12px 16px;background:rgba(255,255,255,0.6);border-radius:1rem;text-align:center;min-width:80px"><div style="font-size:1.2rem;font-weight:900;color:${color}">${v.avg}</div><div style="font-size:.7rem;opacity:.5">${v.name} ${t[2]}</div><div style="font-size:.6rem;opacity:.3">${v.c} 次采样</div></div>`;
+    }).join('')||'<span style="opacity:.3">暂无数据，需访问页面触发</span>';
+    // 最近访客
+    $('#recent-visitors').innerHTML=s.recent.map(v=>{
+      const t=new Date(v.created_at*1000);
+      const time=`${t.getMonth()+1}/${t.getDate()} ${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+      const ipShort=v.ip.split(':').pop()||'?';
+      const uaShort=v.ua.includes('Chrome')?'Chrome':v.ua.includes('Firefox')?'Firefox':v.ua.includes('Safari')?'Safari':'Other';
+      return`<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #E8E0D5;font-size:.8rem"><span style="opacity:.4;width:90px;flex-shrink:0">${time}</span><span style="font-weight:700;width:100px;flex-shrink:0">${ipShort}</span><span style="opacity:.5;width:60px;flex-shrink:0">${uaShort}</span><span style="opacity:.4;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${v.page}</span></div>`;
+    }).join('')||'<span style="opacity:.3">暂无访客</span>';
+
+    // 访客地图 (简易 SVG 世界地图)
+    const mapEl=$('#visitor-map');
+    if(map.locations&&map.locations.length){
+      // 使用简单的点阵地图
+      let mapHtml='<div style="position:relative;width:100%;aspect-ratio:2/1;background:linear-gradient(180deg,#e8f0fe 0%,#d4e4f7 100%);border-radius:.5rem;overflow:hidden">';
+      mapHtml+='<svg viewBox="0 0 360 180" style="width:100%;height:100%;opacity:.15"><rect fill="none" width="360" height="180"/>';
+      // 大陆轮廓简化点
+      mapHtml+='<path fill="#7A9E77" opacity=".3" d="M50,50 Q80,30 120,40 L140,60 Q130,80 100,70 Z"/>'; // 北美
+      mapHtml+='<path fill="#7A9E77" opacity=".3" d="M100,80 Q120,70 130,90 L120,130 Q100,140 90,120 Z"/>'; // 南美
+      mapHtml+='<path fill="#7A9E77" opacity=".3" d="M170,30 Q200,20 230,30 L250,60 Q240,80 200,70 Z"/>'; // 欧洲
+      mapHtml+='<path fill="#7A9E77" opacity=".3" d="M180,70 Q200,60 230,70 L240,110 Q220,130 190,120 Z"/>'; // 非洲
+      mapHtml+='<path fill="#7A9E77" opacity=".3" d="M240,30 Q280,20 320,35 L340,80 Q330,120 280,100 L260,60 Z"/>'; // 亚洲
+      mapHtml+='<path fill="#7A9E77" opacity=".3" d="M310,120 Q330,110 340,130 L330,150 Q315,155 310,140 Z"/>'; // 澳洲
+      mapHtml+='</svg>';
+      // 访客点
+      map.locations.forEach((loc,i)=>{
+        const x=((loc.lon+180)/360)*100;
+        const y=((90-loc.lat)/180)*100;
+        mapHtml+=`<div style="position:absolute;left:${x}%;top:${y}%;width:8px;height:8px;background:#C4956A;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px rgba(196,149,106,0.5);transform:translate(-50%,-50%);animation:dotPop 0.5s ease ${i*0.1}s both" title="${loc.city}, ${loc.country}"></div>`;
+      });
+      // 城市标签
+      const cityGroups={};
+      map.locations.forEach(l=>{const k=l.city+','+l.country;(cityGroups[k]=cityGroups[k]||[]).push(l)});
+      Object.entries(cityGroups).forEach(([name,locs])=>{
+        const avgLon=locs.reduce((s,l)=>s+l.lon,0)/locs.length;
+        const avgLat=locs.reduce((s,l)=>s+l.lat,0)/locs.length;
+        const x=((avgLon+180)/360)*100;
+        const y=((90-avgLat)/180)*100;
+        mapHtml+=`<div style="position:absolute;left:${x}%;top:${y+4}%;transform:translateX(-50%);font-size:9px;font-weight:700;color:#5C4F42;white-space:nowrap;text-shadow:0 0 4px #fff">${name} (${locs.length})</div>`;
+      });
+      mapHtml+='<style>@keyframes dotPop{from{transform:translate(-50%,-50%) scale(0);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}</style>';
+      mapHtml+='</div>';
+      mapEl.innerHTML=mapHtml;
+    }else{
+      mapEl.innerHTML='<div style="text-align:center;padding:40px;opacity:.3">暂无外部访客数据</div>';
+    }
+  }catch(e){console.log('Stats load error:',e)}
+}
+
+// === 实时访客 SSE ===
+let sseReconnect;
+function connectSSE(){
+  if(sseReconnect)clearTimeout(sseReconnect);
+  const token=localStorage.getItem('t');
+  if(!token)return;
+  const es=new EventSource('/api/admin/visitors/stream?token='+token);
+  const feed=$('#live-feed');
+  es.onmessage=e=>{
+    try{
+      const d=JSON.parse(e.data);
+      if(d.type==='visit'){
+        const t=new Date(d.time);
+        const time=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0')+':'+String(t.getSeconds()).padStart(2,'0');
+        const item=document.createElement('div');
+        item.style.cssText='display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #E8E0D5;font-size:.8rem';
+        item.innerHTML='<span style="font-weight:700;color:#C4956A;flex-shrink:0">'+time+'</span><span style="font-weight:700;flex:1">'+d.ip+'</span><span style="opacity:.5;flex-shrink:0">'+d.ua+'</span><span style="opacity:.4;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+d.page+'</span>';
+        const placeholder=feed.querySelector('[style*="text-align:center"]');
+        if(placeholder)placeholder.remove();
+        feed.insertBefore(item,feed.firstChild);
+        while(feed.children.length>30)feed.removeChild(feed.lastChild);
+        const totalEl=$('#stat-total');
+        totalEl.textContent=parseInt(totalEl.textContent||0)+1;
+      }
+    }catch{}
+  };
+  es.onerror=()=>{es.close();sseReconnect=setTimeout(connectSSE,5000)};
+}
+
+// PASSWORD
+document.getElementById('pwf').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const body={oldPassword:$('#pw-old').value};
+  if($('#pw-user').value.trim()) body.username=$('#pw-user').value.trim();
+  if($('#pw-new').value) body.newPassword=$('#pw-new').value;
+  if(!body.username&&!body.newPassword){showToast('❌ 至少填一项');return}
+  if(body.newPassword&&body.newPassword.length<6){showToast('❌ 新密码至少6位');return}
+  const r=await fetch('/api/admin/password',{method:'PUT',headers:H(),body:JSON.stringify(body)});
+  const d=await r.json();
+  if(r.ok){showToast('✅ 已修改');$('#pwf').reset();localStorage.removeItem('t');setTimeout(()=>location.reload(),1500)}
+  else{showToast('❌ '+(d.error||'修改失败'))}
+});
+
+// Quick nav scroll spy + smooth scroll
+document.querySelectorAll('nav a[href^="#sec-"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth'});
+  });
+});
+const navLinks=document.querySelectorAll('nav a[href^="#sec-"]');
+const sections=['sec-config','sec-stats','sec-skills','sec-projects','sec-account'].map(id=>document.getElementById(id)).filter(Boolean);
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+},{passive:true});
+
+// Theme: apply on load + on change
+function applyTheme(t){
+  document.body.classList.remove('theme-brutal','theme-sketch');
+  if(t==='brutal') document.body.classList.add('theme-brutal');
+  if(t==='sketch') document.body.classList.add('theme-sketch');
+}
+// Apply from config after loading
+const _origLoadConfig = loadConfig;
+loadConfig = async function(){await _origLoadConfig(); applyTheme(document.querySelector('select[name=theme]')?.value||'warm')};
+// Live preview on theme switch
+document.querySelector('select[name=theme]')?.addEventListener('change', function(){applyTheme(this.value)});
+</script>
+</body>
+</html>

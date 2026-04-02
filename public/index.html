@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="绪深 | 路没有尽头">
+<meta property="og:description" content="热爱编程 · 开源爱好者 · 终身学习者">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xusn.cn">
+<meta property="og:image" content="https://q1.qlogo.cn/g?b=qq&nk=2687821674&s=640">
+<meta name="twitter:card" content="summary">
+
+<!-- JSON-LD 结构化数据 -->
+<script type="application/ld+json" id="json-ld"></script>
+<title>绪深 | 路没有尽头</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=ZCOOL+QingKe+HuangYou&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        round: ['"Varela Round"', '"ZCOOL QingKe HuangYou"', '"PingFang SC"', '"Microsoft YaHei"', 'sans-serif'],
+        display: ['"ZCOOL QingKe HuangYou"', '"Varela Round"', 'sans-serif'],
+      },
+      colors: {
+        cream: '#FDFBF7',
+        warm: { 50:'#FAF8F5', 100:'#F5F1EA', 200:'#E8E0D5', 800:'#5C4F42', 900:'#3D3429' },
+        sage: { 100:'#E3ECE1', 200:'#C5D8C0', 500:'#7A9E77', 600:'#5E7A5A' },
+        clay: { 100:'#F2E6E0', 200:'#E6CCBF', 500:'#C4956A', 600:'#A67B52' }
+      },
+    }
+  }
+}
+</script>
+
+<style>
+body {
+  background-color: #FDFBF7;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(226,232,220,0.3) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(242,230,224,0.3) 0px, transparent 50%);
+  color: #3D3429;
+  font-family: 'Varela Round','ZCOOL QingKe HuangYou','PingFang SC','Microsoft YaHei',sans-serif;
+  letter-spacing: 0.04em;
+}
+.glass-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(20px); border:2px solid rgba(255,255,255,0.9); box-shadow:0 8px 32px rgba(0,0,0,0.04); }
+h1,h2,h3,.title-font { font-family:'ZCOOL QingKe HuangYou','Varela Round',sans-serif; font-weight:400; }
+.rounded-text { font-family:'Varela Round','ZCOOL QingKe HuangYou',sans-serif; }
+.tag-rounded { font-family:'ZCOOL QingKe HuangYou',sans-serif; letter-spacing:0.05em; }
+.hover-float { transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.hover-float:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 30px 60px -20px rgba(0,0,0,0.1); }
+.btn-text { font-family:'ZCOOL QingKe HuangYou','Varela Round',sans-serif; letter-spacing:0.1em; }
+.cursor-blink { animation:blink 1s step-end infinite; color:#C4956A; }
+@keyframes blink { 50%{opacity:0} }
+.spotlight { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; background:radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(196,149,106,0.08) 0%, transparent 50%); z-index:0; }
+.qq-avatar { object-fit:cover; transition:transform 0.3s ease; }
+.avatar-container:hover .qq-avatar { transform:scale(1.05); }
+.progress-bar { border-radius:999px; overflow:hidden; }
+.progress-fill { border-radius:999px; transition:width 1s ease-out; }
+.fade-in { animation:fadeIn 0.6s ease-out forwards; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.quote-mark { font-size:3rem; line-height:1; opacity:0.2; font-family:Georgia,serif; }
+.hitokoto-click { transition:transform 0.2s ease, opacity 0.3s ease; }
+.hitokoto-click:active { transform:scale(0.98); }
+.circle-spotlight { animation:pulse-glow 2s ease-in-out infinite; position:relative; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s ease; }
+.circle-spotlight::before { content:''; position:absolute; inset:-4px; border-radius:50%; background:radial-gradient(circle, rgba(196,149,106,0.3) 0%, transparent 70%); filter:blur(8px); z-index:-1; animation:pulse-glow 2s ease-in-out infinite; }
+.circle-spotlight:hover { transform:scale(1.1); background-color:rgba(196,149,106,0.2); }
+@keyframes pulse-glow { 0%,100%{opacity:0.4;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.1)} }
+.email-btn { box-shadow:none !important; background:linear-gradient(135deg, #5C4F42 0%, #3D3429 100%); transition:all 0.3s ease; }
+.email-btn:hover { background:linear-gradient(135deg, #3D3429 0%, #2a231e 100%); }
+
+/* 加载动画 */
+#page-loader {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:#FDFBF7; z-index:9999;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition:opacity 0.6s ease, visibility 0.6s ease;
+}
+#page-loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+.loader-avatar { width:72px; height:72px; border-radius:50%; overflow:hidden; border:3px solid #E8E0D5; margin-bottom:20px; animation:breath 2s ease-in-out infinite; }
+.loader-avatar img { width:100%; height:100%; object-fit:cover; }
+.loader-text { font-family:'ZCOOL QingKe HuangYou',sans-serif; color:#C4956A; font-size:14px; opacity:0.7; animation:pulse2 1.5s ease-in-out infinite; }
+@keyframes breath { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(196,149,106,0.3)} 50%{transform:scale(1.06);box-shadow:0 0 30px 10px rgba(196,149,106,0.15)} }
+@keyframes pulse2 { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+.adaptive-spotlight { width:56px; height:56px; }
+@media(min-width:768px){ .adaptive-spotlight{width:64px;height:64px} }
+@media(min-width:1024px){ .adaptive-spotlight{width:72px;height:72px} }
+.skill-gradient-clay { background:linear-gradient(to right, #C4956A, #A67B52); }
+.skill-gradient-sage { background:linear-gradient(to right, #7A9E77, #5E7A5A); }
+.skill-gradient-blue { background:linear-gradient(to right, #60A5FA, #3B82F6); }
+.skill-gradient-purple { background:linear-gradient(to right, #A78BFA, #8B5CF6); }
+.skill-gradient-orange { background:linear-gradient(to right, #FB923C, #F97316); }
+
+/* 手绘风格 */
+.hand-drawn-circle { border-radius: 50% 45% 55% 48% / 52% 48% 50% 45% !important; }
+.hand-drawn-rect { border-radius: 3px 5px 2px 4px !important; }
+.sketch-icon { display:inline-block; transform:rotate(-1deg); }
+.sketch-icon svg { stroke-linecap:round; stroke-linejoin:round; }
+
+/* ========== 粗野风主题（浅色系） ========== */
+.theme-brutal {
+  background-color: #f0ece4;
+  background-image: none;
+  color: #111;
+}
+.theme-brutal .glass-card {
+  background: #fff;
+  backdrop-filter: none;
+  border: 3px solid #111;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0 #111;
+}
+.theme-brutal nav .glass-card {
+  background: #f0ece4;
+  border-color: #111;
+  border-radius: 0 !important;
+}
+.theme-brutal .title-font,
+.theme-brutal h1, .theme-brutal h2, .theme-brutal h3,
+.theme-brutal .btn-text, .theme-brutal .tag-rounded {
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace !important;
+  letter-spacing: -0.02em !important;
+}
+.theme-brutal .rounded-text {
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace !important;
+}
+.theme-brutal #hero-name {
+  font-size: 4rem;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: #111;
+}
+.theme-brutal .avatar {
+  border-radius: 0 !important;
+  border: 3px solid #111 !important;
+}
+.theme-brutal .hero-badge {
+  background: transparent !important;
+  color: #111 !important;
+  border: 2px solid #111;
+  border-radius: 0 !important;
+}
+.theme-brutal .social-btn {
+  background: #fff !important;
+  border: 2px solid #111 !important;
+  border-radius: 0 !important;
+  color: #111 !important;
+  box-shadow: 4px 4px 0 #111;
+}
+.theme-brutal .social-btn:hover {
+  background: #111 !important;
+  color: #fff !important;
+  box-shadow: none;
+}
+.theme-brutal #contact .glass-card {
+  background: #fff;
+  border: 3px solid #111;
+  border-radius: 0 !important;
+}
+.theme-brutal .email-btn {
+  background: #111 !important;
+  color: #f0ece4 !important;
+  border-radius: 0 !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.theme-brutal .email-btn:hover {
+  background: #c0392b !important;
+  color: #fff !important;
+}
+.theme-brutal .link-btn {
+  background: #fff !important;
+  border: 2px solid #111 !important;
+  border-radius: 0 !important;
+  color: #111 !important;
+  box-shadow: 4px 4px 0 #111;
+}
+.theme-brutal .link-btn:hover {
+  background: #111 !important;
+  color: #fff !important;
+  box-shadow: none;
+}
+.theme-brutal footer {
+  border-color: #111;
+  color: #666;
+}
+.theme-brutal footer a { color: #c0392b; }
+.theme-brutal .hover-float:hover {
+  transform: none !important;
+  box-shadow: 6px 6px 0 #111 !important;
+}
+.theme-brutal .progress-bar { border-radius: 0 !important; }
+.theme-brutal .progress-fill { border-radius: 0 !important; }
+.theme-brutal .circle-spotlight { border-radius: 0 !important; }
+.theme-brutal .circle-spotlight::before { border-radius: 0 !important; }
+.theme-brutal .cursor-blink { color: #c0392b; }
+.theme-brutal .spotlight { background: none !important; }
+.theme-brutal .adaptive-spotlight {
+  background: #fff !important;
+  border: 2px solid #111 !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 #111;
+}
+.theme-brutal .skill-dot { border-radius: 0 !important; }
+.theme-brutal ::selection {
+  background: #c0392b;
+  color: #fff;
+}
+.theme-brutal .rounded-full,
+.theme-brutal .rounded-2xl,
+.theme-brutal .rounded-xl,
+.theme-brutal .rounded-\[2rem\],
+.theme-brutal .rounded-\[2\.5rem\] {
+  border-radius: 0 !important;
+}
+.theme-brutal #page-loader { background: #f0ece4; }
+.theme-brutal .loader-avatar { border: 3px solid #111; border-radius: 0 !important; }
+.theme-brutal .loader-text { color: #111; }
+.theme-brutal .glass-card:hover {
+  border-color: #c0392b !important;
+  box-shadow: 5px 5px 0 #c0392b !important;
+}
+/* 粗野风 - 技能标签 */
+.theme-brutal .glass-card .px-5.py-2 {
+  border-radius: 0 !important;
+  border: 1px solid #111;
+}
+
+/* === 手绘风 === */
+.theme-sketch {
+  background: #fef9ef !important;
+  background-image: repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(139,119,101,.06) 31px,rgba(139,119,101,.06) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(139,119,101,.04) 31px,rgba(139,119,101,.04) 32px) !important;
+  color: #3d3429;
+}
+.theme-sketch .glass-card {
+  background: rgba(255,255,255,.85) !important;
+  backdrop-filter: none !important;
+  border: 2.5px solid #3d3429 !important;
+  border-radius: 2px 8px 2px 12px !important;
+  box-shadow: 3px 3px 0 rgba(61,52,41,.15) !important;
+}
+.theme-sketch nav .glass-card {
+  border-radius: 999px !important;
+  border: 2.5px solid #3d3429 !important;
+}
+.theme-sketch .title-font,
+.theme-sketch h1, .theme-sketch h2, .theme-sketch h3,
+.theme-sketch .btn-text, .theme-sketch .tag-rounded {
+  font-family: 'Caveat','ZCOOL QingKe HuangYou',cursive !important;
+}
+.theme-sketch .rounded-text {
+  font-family: 'Caveat',cursive !important;
+}
+.theme-sketch #hero-name {
+  font-size: 4rem;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  color: #3d3429;
+}
+.theme-sketch .avatar {
+  border: 3px solid #3d3429 !important;
+  border-radius: 50% !important;
+  box-shadow: 3px 3px 0 rgba(61,52,41,.12) !important;
+}
+.theme-sketch .hero-badge {
+  background: transparent !important;
+  color: #5c4f42 !important;
+  border: 2px dashed #8b7765 !important;
+  border-radius: 2px 8px 2px 12px !important;
+  font-family: 'Caveat',cursive !important;
+}
+.theme-sketch .social-btn {
+  background: #fff !important;
+  border: 2.5px solid #3d3429 !important;
+  border-radius: 2px 8px 2px 12px !important;
+  color: #3d3429 !important;
+  box-shadow: 3px 3px 0 rgba(61,52,41,.12);
+}
+.theme-sketch .social-btn:hover {
+  transform: translateY(-2px) rotate(-1deg) !important;
+  box-shadow: 4px 4px 0 rgba(61,52,41,.2) !important;
+}
+.theme-sketch #contact .glass-card {
+  border: 2.5px solid #3d3429 !important;
+  border-radius: 2px 12px 2px 16px !important;
+}
+.theme-sketch .email-btn {
+  background: #3d3429 !important;
+  color: #fef9ef !important;
+  border-radius: 2px 8px 2px 12px !important;
+  font-family: 'Caveat',cursive !important;
+  font-size: 1.1rem !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.theme-sketch .email-btn:hover {
+  background: #c4956a !important;
+  transform: rotate(-1deg) !important;
+}
+.theme-sketch .link-btn {
+  background: #fff !important;
+  border: 2.5px solid #3d3429 !important;
+  border-radius: 2px 8px 2px 12px !important;
+  color: #3d3429 !important;
+  box-shadow: 3px 3px 0 rgba(61,52,41,.12);
+}
+.theme-sketch .link-btn:hover {
+  transform: translateY(-2px) rotate(-1deg) !important;
+  box-shadow: 4px 4px 0 rgba(61,52,41,.2) !important;
+}
+.theme-sketch footer {
+  border-color: #8b7765;
+  border-top: 2px dashed #8b7765;
+  color: #8b7765;
+}
+.theme-sketch footer a { color: #c4956a; }
+.theme-sketch .hover-float:hover {
+  transform: translateY(-4px) rotate(-.5deg) !important;
+  box-shadow: 4px 4px 0 rgba(61,52,41,.15) !important;
+}
+.theme-sketch .progress-bar { border-radius: 2px !important; border: 2px dashed #8b7765 !important; }
+.theme-sketch .progress-fill { border-radius: 1px !important; background: #c4956a !important; }
+.theme-sketch .circle-spotlight { border-radius: 50% !important; border: 3px solid #3d3429 !important; }
+.theme-sketch .circle-spotlight::before { border-radius: 50% !important; background: none !important; box-shadow: inset 0 0 20px rgba(61,52,41,.08) !important; }
+.theme-sketch .cursor-blink { color: #c4956a; }
+.theme-sketch .spotlight { background: none !important; }
+.theme-sketch .adaptive-spotlight {
+  background: rgba(255,255,255,.85) !important;
+  border: 2.5px solid #3d3429 !important;
+  border-radius: 2px 8px 2px 12px !important;
+  box-shadow: 3px 3px 0 rgba(61,52,41,.12);
+}
+.theme-sketch .skill-dot { border-radius: 50% !important; border: 2px solid #3d3429 !important; }
+.theme-sketch ::selection { background: #c4956a; color: #fff; }
+.theme-sketch .rounded-full,
+.theme-sketch .rounded-2xl,
+.theme-sketch .rounded-xl,
+.theme-sketch .rounded-\[2rem\],
+.theme-sketch .rounded-\[2\.5rem\] {
+  border-radius: 2px 8px 2px 12px !important;
+}
+.theme-sketch #page-loader { background: #fef9ef; }
+.theme-sketch .loader-avatar { border: 3px solid #3d3429; border-radius: 50% !important; box-shadow: 3px 3px 0 rgba(61,52,41,.1); }
+.theme-sketch .loader-text { color: #3d3429; font-family: 'Caveat',cursive !important; }
+.theme-sketch .glass-card:hover {
+  border-color: #c4956a !important;
+  box-shadow: 4px 4px 0 rgba(196,149,106,.2) !important;
+}
+.theme-sketch .glass-card .px-5.py-2 {
+  border-radius: 2px 6px 2px 8px !important;
+  border: 1.5px dashed #8b7765;
+  font-family: 'Caveat',cursive !important;
+}
+/* 手绘风 - 导航菜单 */
+.theme-sketch nav div[class*="bg-warm-100"] {
+  background: rgba(254,249,239,.8) !important;
+}
+.theme-sketch nav div[class*="bg-warm-100"] a {
+  font-family: 'Caveat',cursive !important;
+  border-radius: 2px 6px 2px 8px !important;
+}
+.theme-sketch nav div[class*="bg-warm-100"] a:hover {
+  background: rgba(196,149,106,.12) !important;
+}
+.theme-sketch nav a .rounded-full {
+  border: 2.5px solid #3d3429 !important;
+}
+</style>
+</head>
+<body class="antialiased selection:bg-clay-200 selection:text-warm-900">
+
+<!-- 加载动画 -->
+<div id="page-loader">
+  <div class="loader-avatar"><img id="loader-img" src="" alt="XUSN"></div>
+  <div class="loader-text">加载中…</div>
+</div>
+
+<!-- SVG 手绘滤镜 -->
+<svg style="position:absolute;width:0;height:0">
+  <defs>
+    <filter id="hand-drawn-filter">
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="2"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="spotlight" id="spotlight"></div>
+
+<!-- 导航栏 -->
+<nav class="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
+<div class="max-w-6xl mx-auto relative">
+  <div class="glass-card rounded-full px-6 py-3 flex justify-between items-center">
+    <a href="#" class="text-2xl title-font text-warm-900 hover:text-clay-600 transition-colors flex items-center gap-3">
+      <div class="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md ring-2 ring-clay-200">
+        <img id="nav-avatar" src="" alt="XUSN" class="w-full h-full object-cover">
+      </div>
+      <span class="hidden sm:inline tracking-widest" id="nav-name">XUSN</span>
+    </a>
+    <div class="hidden md:flex items-center gap-1 bg-warm-100/50 rounded-full p-1">
+      <a href="#about" class="px-5 py-2 rounded-full text-warm-800 hover:bg-white transition-all text-sm btn-text">关于</a>
+      <a href="#skills" class="px-5 py-2 rounded-full text-warm-800 hover:bg-white transition-all text-sm btn-text">技能</a>
+      <a href="#projects" class="px-5 py-2 rounded-full text-warm-800 hover:bg-white transition-all text-sm btn-text">作品</a>
+      <a href="#contact" class="px-5 py-2 rounded-full bg-warm-800 text-white shadow-md hover:bg-warm-900 transition-all text-sm btn-text ml-1">联系</a>
+    </div>
+    <button onclick="toggleMenu()" class="md:hidden w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center text-warm-800 hover:bg-clay-100 transition-colors">
+      <i class="fas fa-bars" id="menu-icon"></i>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 mt-3 px-2 z-40">
+    <div class="glass-card rounded-[2rem] p-4 flex flex-col gap-2 shadow-2xl max-h-[70vh] overflow-y-auto">
+      <a href="#about" onclick="toggleMenu()" class="px-6 py-3 rounded-2xl text-warm-800 hover:bg-white transition-all text-lg btn-text flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-clay-100 flex items-center justify-center text-lg">👤</span><span>关于我</span></a>
+      <a href="#skills" onclick="toggleMenu()" class="px-6 py-3 rounded-2xl text-warm-800 hover:bg-white transition-all text-lg btn-text flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center text-lg">⚡</span><span>技能</span></a>
+      <a href="#projects" onclick="toggleMenu()" class="px-6 py-3 rounded-2xl text-warm-800 hover:bg-white transition-all text-lg btn-text flex items-center gap-3"><span class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg">💼</span><span>作品</span></a>
+      <a href="#contact" onclick="toggleMenu()" class="px-6 py-3 rounded-2xl bg-warm-800 text-white transition-all text-lg btn-text flex items-center gap-3 shadow-lg mt-1"><span class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg">✉️</span><span>联系我</span></a>
+    </div>
+  </div>
+</div>
+</nav>
+
+<main class="relative z-10 pt-28 pb-20 px-4 md:px-8 max-w-6xl mx-auto">
+
+<!-- Hero -->
+<section class="min-h-[85vh] flex items-center justify-center mb-20">
+<div class="text-center max-w-3xl mx-auto">
+  <div class="relative inline-block mb-8 avatar-container cursor-pointer" onclick="createRipple(event)">
+    <div class="absolute inset-0 bg-gradient-to-r from-clay-200 to-sage-200 rounded-full blur-2xl opacity-50 animate-pulse"></div>
+    <div class="relative w-36 h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-br from-white to-warm-100 p-1.5 shadow-xl">
+      <div class="w-full h-full rounded-full overflow-hidden border-4 border-white relative">
+        <img id="hero-avatar" src="" alt="" class="qq-avatar w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/10 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center"><span class="text-white text-2xl">👋</span></div>
+      </div>
+    </div>
+    <div class="absolute -top-2 -left-2 w-6 h-6 bg-clay-300 rounded-full opacity-60 animate-ping"></div>
+    <div class="absolute top-1/2 -right-4 w-4 h-4 bg-sage-300 rounded-full opacity-60"></div>
+  </div>
+
+  <h1 class="text-6xl md:text-8xl mb-4 tracking-wide leading-tight title-font">
+    <span class="block text-warm-900 mb-2" id="hero-name">绪深</span>
+    <span class="block text-2xl md:text-3xl text-clay-600 mt-6 font-normal rounded-text">
+      <span id="typewriter"></span><span class="cursor-blink">|</span>
+    </span>
+  </h1>
+
+  <div class="mt-6 mb-10 px-4 py-6 relative hitokoto-click cursor-pointer group select-none" onclick="fetchHitokoto()">
+    <div class="absolute -top-1 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-30 transition-all duration-300 text-[10px] text-clay-600 tag-rounded tracking-widest uppercase">点击换一句</div>
+    <div class="quote-mark absolute -top-2 left-1/2 transform -translate-x-1/2 text-clay-300 pointer-events-none">"</div>
+    <p id="hitokoto" class="text-lg md:text-xl text-warm-800/70 leading-relaxed rounded-text min-h-[3.5rem] flex items-center justify-center fade-in">
+      <span class="inline-block w-2 h-2 bg-clay-300 rounded-full animate-pulse mr-2"></span>正在加载一言...
+    </p>
+    <div id="hitokoto-from" class="mt-2 text-sm text-clay-500/50 rounded-text hidden">—— <span></span></div>
+    <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-0 group-hover:w-12 h-0.5 bg-clay-300/30 transition-all duration-300 rounded-full"></div>
+  </div>
+
+  <div class="flex justify-center mt-8">
+    <div class="circle-spotlight adaptive-spotlight rounded-full bg-clay-200/40" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})" style="filter:url(#hand-drawn-filter)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5C4F42" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hand-drawn-svg"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 关于我 -->
+<section id="about" class="mb-24 scroll-mt-28">
+<div class="glass-card rounded-[2.5rem] p-8 md:p-12">
+  <div class="grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <div class="inline-block px-5 py-2 rounded-full bg-clay-100 text-clay-700 text-sm tag-rounded mb-4">✨ 关于我</div>
+      <h2 class="text-3xl md:text-5xl text-warm-900 mb-6 leading-snug title-font">
+        在 <span class="text-clay-600">0</span> 和 <span class="text-clay-600">1</span> 之间<br>寻找无限可能
+      </h2>
+      <div class="space-y-4 text-warm-800/80 leading-relaxed rounded-text text-lg">
+        <p id="about-desc"></p>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <div class="flex items-center gap-2 px-5 py-2 rounded-full bg-sage-100 text-sage-700 text-sm tag-rounded"><i class="fas fa-map-marker-alt"></i> <span id="about-location">中国</span></div>
+        <div class="flex items-center gap-2 px-5 py-2 rounded-full bg-blue-50 text-blue-600 text-sm tag-rounded"><i class="fas fa-graduation-cap"></i> <span id="about-edu">高一</span></div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="absolute inset-0 bg-gradient-to-r from-clay-200 to-sage-200 rounded-full blur-3xl opacity-30"></div>
+      <div class="relative glass-card rounded-[2rem] p-6 border-2 border-white">
+        <div class="flex items-center gap-2 mb-4"><i class="fab fa-github text-warm-800"></i><span class="text-sm text-warm-800 font-bold tag-rounded">GitHub 活跃度</span></div>
+        <div class="rounded-xl overflow-hidden bg-white/60 p-2 mb-4" style="min-height:100px">
+          <div id="gh-chart"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="p-3 rounded-xl bg-white/60"><div class="text-2xl title-font text-clay-600" id="gh-repos">-</div><div class="text-xs text-warm-800/50 mt-1">项目</div></div>
+          <div class="p-3 rounded-xl bg-white/60"><div class="text-2xl title-font text-sage-600" id="gh-stars">-</div><div class="text-xs text-warm-800/50 mt-1">Stars</div></div>
+          <div class="p-3 rounded-xl bg-white/60"><div class="text-2xl title-font text-blue-500" id="gh-followers">-</div><div class="text-xs text-warm-800/50 mt-1">关注者</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 技能展示 -->
+<section id="skills" class="mb-24 scroll-mt-28">
+<div class="text-center mb-12">
+  <h2 class="text-4xl md:text-5xl text-warm-900 mb-3 title-font">技术栈</h2>
+  <p class="text-warm-800/60 rounded-text text-lg">持续学习的旅程</p>
+</div>
+<div id="skills-box"></div>
+</section>
+
+<!-- 项目展示 -->
+<section id="projects" class="mb-24 scroll-mt-28">
+<div class="flex justify-between items-end mb-10">
+  <div>
+    <h2 class="text-4xl md:text-5xl text-warm-900 mb-2 title-font">精选作品</h2>
+    <p class="text-warm-800/60 rounded-text text-lg">最近在做的一些东西</p>
+  </div>
+  <a id="github-link" href="#" target="_blank" class="hidden md:flex items-center gap-2 text-clay-600 hover:text-clay-700 btn-text transition-colors bg-white px-5 py-2 rounded-full shadow-sm hover:shadow-md border-2 border-warm-100">GitHub <i class="fas fa-external-link-alt text-xs"></i></a>
+</div>
+<div class="grid md:grid-cols-3 gap-6" id="projects-box"></div>
+</section>
+
+<!-- 联系 -->
+<section id="contact" class="mb-20 scroll-mt-28">
+<div class="glass-card rounded-[2.5rem] p-8 md:p-16 text-center relative overflow-hidden border-2 border-white">
+  <div class="absolute inset-0 bg-gradient-to-br from-clay-50/50 via-transparent to-sage-50/50"></div>
+  <div class="relative z-10 max-w-2xl mx-auto">
+    <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-lg">
+      <img id="contact-avatar" src="" alt="" class="w-full h-full object-cover">
+    </div>
+    <h2 class="text-5xl md:text-6xl text-warm-900 mb-4 title-font">保持联系</h2>
+    <p class="text-warm-800/70 mb-10 text-xl leading-relaxed rounded-text">有想法想要实现？或者只是想聊聊技术和学习？<br>我的邮箱随时为你敞开。</p>
+    <a id="contact-email" href="#" class="inline-flex items-center gap-3 px-10 py-5 email-btn text-white rounded-full btn-text text-xl hover:scale-105 mb-10 group">
+      <i class="fas fa-paper-plane group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform"></i>
+      <span id="contact-email-text"></span>
+    </a>
+    <div class="flex justify-center gap-4">
+      <a id="contact-gh" href="#" target="_blank" class="w-14 h-14 rounded-full bg-white border-2 border-warm-200 flex items-center justify-center text-warm-800 hover:text-warm-900 hover:border-warm-800 hover:scale-110 transition-all shadow-sm text-xl"><i class="fab fa-github"></i></a>
+      <a id="contact-em" href="#" class="w-14 h-14 rounded-full bg-white border-2 border-warm-200 flex items-center justify-center text-clay-600 hover:text-clay-700 hover:border-clay-400 hover:scale-110 transition-all shadow-sm text-xl"><i class="fas fa-envelope"></i></a>
+      <a id="contact-wb" href="#" target="_blank" class="w-14 h-14 rounded-full bg-white border-2 border-warm-200 flex items-center justify-center text-sage-600 hover:text-sage-700 hover:border-sage-400 hover:scale-110 transition-all shadow-sm text-xl"><i class="fas fa-globe"></i></a>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<!-- 页脚 -->
+<footer class="border-t-2 border-warm-200 py-12 text-center text-warm-800/50 text-sm relative z-10 bg-warm-50/30">
+<div class="max-w-6xl mx-auto px-8">
+  <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white border-2 border-warm-100 mb-4 shadow-sm">
+    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+    <span class="btn-text text-warm-800">System Operational</span>
+  </div>
+  <p class="text-2xl text-warm-800 mb-2 title-font" id="footer-name">XUSN</p>
+  <p class="mb-3 rounded-text text-base" id="footer-text"></p>
+  <p class="text-xs opacity-60 rounded-text">© 2026 XUSN. All rights reserved. Made with 💛 and Code. · <span id="visitor-count">-</span> 位访客</p>
+</div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+
+// === 首屏加载 ===
+addEventListener('load',()=>setTimeout(()=>$('#page-loader').classList.add('hidden'),600));
+
+// === 懒加载 ===
+const lazyIO=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){const img=e.target;if(img.dataset.src){img.src=img.dataset.src;img.removeAttribute('data-src')}lazyIO.unobserve(img)}})},{rootMargin:'200px'});
+
+// === 聚光灯跟随 ===
+document.addEventListener('mousemove',e=>{
+  const sp=$('#spotlight');
+  sp.style.setProperty('--x',(e.clientX/window.innerWidth)*100+'%');
+  sp.style.setProperty('--y',(e.clientY/window.innerHeight)*100+'%');
+});
+
+// === 菜单 ===
+function toggleMenu(){
+  const m=$('#mobile-menu'),i=$('#menu-icon');
+  m.classList.toggle('hidden');
+  i.classList.toggle('fa-bars');i.classList.toggle('fa-times');
+}
+document.addEventListener('click',e=>{
+  const m=$('#mobile-menu'),n=document.querySelector('nav');
+  if(!n.contains(e.target)&&!m.classList.contains('hidden'))toggleMenu();
+});
+
+// === 涟漪 ===
+function createRipple(e){
+  const btn=e.currentTarget,c=document.createElement('span');
+  const d=Math.max(btn.clientWidth,btn.clientHeight),r=d/2;
+  c.style.width=c.style.height=d+'px';
+  c.style.left=(e.clientX-btn.getBoundingClientRect().left-r)+'px';
+  c.style.top=(e.clientY-btn.getBoundingClientRect().top-r)+'px';
+  c.className='absolute rounded-full bg-white/30 animate-ping pointer-events-none';
+  btn.appendChild(c);setTimeout(()=>c.remove(),600);
+}
+
+// === 打字机 ===
+let twTexts,twIdx=0,twChar=0,twDel=false;
+function typeWriter(){
+  const t=twTexts[twIdx],el=$('#typewriter');
+  el.textContent=twDel?t.slice(0,--twChar):t.slice(0,++twChar);
+  let s=twDel?50:150;
+  if(!twDel&&twChar==t.length){s=2000;twDel=true}
+  else if(twDel&&twChar==0){twDel=false;twIdx=(twIdx+1)%twTexts.length;s=500}
+  setTimeout(typeWriter,s);
+}
+
+// === 一言 ===
+function fetchHitokoto(){
+  const ht=$('#hitokoto'),hf=$('#hitokoto-from');
+  ht.style.opacity='0.3';hf.style.opacity='0';
+  fetch('https://v1.hitokoto.cn?c=a&c=b&c=c&c=d&c=e&c=f&c=g&c=h&c=i&c=j&c=k&c=l')
+    .then(r=>r.json()).then(d=>{
+      setTimeout(()=>{
+        ht.innerHTML='<span class="text-clay-600">'+d.hitokoto+'</span>';
+        if(d.from){hf.querySelector('span').textContent=d.from;hf.classList.remove('hidden')}
+        ht.style.opacity='1';hf.style.opacity='0.5';
+      },200);
+    }).catch(()=>{
+      setTimeout(()=>{ht.innerHTML='<span class="text-warm-800/50">保持热爱，奔赴山海</span>';ht.style.opacity='1'},200);
+    });
+}
+
+// === 技能渲染 ===
+const dotColors=['#C4956A','#7A9E77','#60A5FA','#A78BFA','#FB923C'];
+const catIcons={语言:'📝',前端:'🎨',工具:'🛠️'};
+function renderSkills(skills){
+  const cats={};
+  skills.forEach(s=>{(cats[s.category]=cats[s.category]||[]).push(s)});
+  let html='<div class="glass-card rounded-[2rem] p-6 md:p-8 hover-float">';
+  const keys=Object.keys(cats);
+  keys.forEach((cat,ci)=>{
+    html+=`<div class="${ci>0?'mt-6 pt-6 border-t-2 border-warm-100':''}">
+      <h3 class="text-lg text-warm-900 mb-4 flex items-center gap-2 title-font">
+        <span>${catIcons[cat]||'⚡'}</span> ${cat}
+      </h3>
+      <div class="flex flex-wrap gap-3">`;
+    cats[cat].forEach((s,i)=>{
+      const dots=Math.round(s.level/20);
+      let dotHtml='';
+      for(let d=0;d<5;d++){dotHtml+=`<div class="w-2 h-2 rounded-full" style="background:${d<dots?dotColors[ci%dotColors.length]:'#E8E0D5'}"></div>`}
+      html+=`<div class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-warm-200/50 hover:border-clay-200 hover:bg-white transition-all">
+        <span class="font-bold text-sm text-warm-800">${s.name}</span>
+        <div class="flex gap-0.5">${dotHtml}</div>
+      </div>`;
+    });
+    html+='</div></div>';
+  });
+  html+='</div>';
+  $('#skills-box').innerHTML=html;
+}
+
+// === 项目渲染 ===
+const projGrads=['from-orange-50 to-amber-50','from-green-50 to-emerald-50','from-blue-50 to-indigo-50','from-purple-50 to-pink-50','from-rose-50 to-red-50'];
+const projTexts=['text-clay-300','text-sage-300','text-blue-300','text-purple-300','text-rose-300'];
+const projBorders=['hover:border-clay-200','hover:border-sage-300','hover:border-blue-200','hover:border-purple-200','hover:border-rose-200'];
+const projLinks=['text-clay-600','text-sage-600','text-blue-600','text-purple-600','text-rose-600'];
+
+function renderProjects(projects){
+  let html='';
+  projects.forEach((p,i)=>{
+    const grad=projGrads[i%5],txt=projTexts[i%5],border=projBorders[i%5],linkC=projLinks[i%5];
+    const tags=(p.tags||[]).map(t=>'<span class="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs tag-rounded">'+t+'</span>').join('');
+    const icon=p.icon||'fas fa-globe';
+
+    // 缩略图区：有缩略图用图片，没有用渐变图标
+    let header;
+    if(p.thumbnail){
+      header=`<div class="h-44 rounded-2xl overflow-hidden mb-4 relative"><img src="${p.thumbnail}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy"></div>`;
+    } else {
+      header=`<div class="h-44 rounded-2xl bg-gradient-to-br ${grad} flex items-center justify-center relative overflow-hidden mb-4"><i class="${icon} text-6xl ${txt} group-hover:scale-110 transition-transform duration-500"></i></div>`;
+    }
+
+    html+=`<div class="group glass-card rounded-[2rem] overflow-hidden hover-float border-2 border-transparent ${border} transition-all p-4">
+      ${header}
+      <div class="px-2 pb-2">
+        <div class="flex gap-2 mb-3">${tags}</div>
+        <h3 class="text-2xl text-warm-900 mb-2 title-font">${p.title}</h3>
+        <p class="text-warm-800/60 text-sm mb-4 leading-relaxed rounded-text">${p.desc}</p>
+        <a href="${p.link||'#'}" class="inline-flex items-center gap-2 ${linkC} btn-text hover:gap-3 transition-all" target="_blank">查看详情 <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>`;
+  });
+  $('#projects-box').innerHTML=html;
+}
+
+// === 主加载 ===
+fetch('/api/site').then(r=>r.json()).then(d=>{
+  const c=d.config;
+  document.title=(c.name||'绪深')+' | 路没有尽头';
+
+  // JSON-LD
+  const site=c.website||'https://xusn.cn';
+  $('#json-ld').textContent=JSON.stringify({
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":c.name||'绪深',
+    "url":site,
+    "image":c.avatar||'',
+    "email":c.email||'',
+    "sameAs":[c.github||'',c.website||''].filter(Boolean),
+    "jobTitle":c.title||'',
+    "description":c.desc||'',
+    "knowsAbout":(d.skills||[]).map(s=>s.name)
+  });
+
+  // 主题
+  const theme=c.theme||'warm';
+  const base='antialiased selection:bg-clay-200 selection:text-warm-900';
+  document.body.className=theme==='brutal'?'theme-brutal':theme==='sketch'?'theme-sketch '+base:base;
+
+  // 导航
+  $('#nav-name').textContent=c.name||'XUSN';
+  $('#nav-avatar').src=c.avatar||'';
+  $('#nav-avatar').onerror=function(){this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=XUSN'};
+
+  // Hero
+  $('#hero-name').textContent=c.name||'绪深';
+  $('#hero-avatar').src=c.avatar||'';
+  $('#hero-avatar').onerror=function(){this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=XUSN&backgroundColor=FDFBF7'};
+  $('#loader-img').src=c.avatar||'';
+  $('#loader-img').onerror=function(){this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=XUSN&backgroundColor=FDFBF7'};
+
+  // 打字机
+  twTexts=[c.title||'高一学生','热爱编程','开源爱好者','终身学习者'];
+  setTimeout(typeWriter,500);
+
+  // 关于
+  $('#about-desc').textContent=c.desc||'';
+  $('#about-location').textContent=c.location||'中国';
+  $('#about-edu').textContent=c.education||'高一';
+
+  // GitHub stats
+  fetch('/api/github').then(r=>r.json()).then(gh=>{
+    $('#gh-repos').textContent=gh.public_repos||'-';
+    $('#gh-stars').textContent=gh.total_stars||'-';
+    $('#gh-followers').textContent=gh.followers||'-';
+    if(gh.username){$('#gh-chart').innerHTML=`<img src="https://ghchart.rshah.org/${gh.username}" style="width:100%;height:auto;opacity:0.85" loading="lazy" alt="GitHub Contributions">`}
+  }).catch(()=>{});
+
+  // 技能
+  renderSkills(d.skills);
+
+  // 项目
+  renderProjects(d.projects);
+  $('#github-link').href=c.github||'#';
+
+  // 联系
+  $('#contact-avatar').src=c.avatar||'';
+  const em='mailto:'+(c.email||'');
+  $('#contact-email').href=em;$('#contact-em').href=em;
+  $('#contact-email-text').textContent=c.email||'';
+  $('#contact-gh').href=c.github||'#';
+  $('#contact-wb').href=c.website||'#';
+
+  // 页脚
+  $('#footer-name').textContent=c.name||'XUSN';
+  $('#footer-text').textContent=c.footer||'用温柔的方式改变世界';
+
+  // 一言
+  fetchHitokoto();
+
+  // 访客追踪
+  fetch('/api/visit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:location.pathname})})
+    .then(r=>r.json()).then(d=>{const el=$('#visitor-count');if(el)el.textContent=d.total}).catch(()=>{});
+  // 浏览器定位（更精确）
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      fetch('/api/geolocation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lat:pos.coords.latitude,lon:pos.coords.longitude})})
+    },()=>{},{timeout:5000,maximumAge:300000});
+  }
+  // Web Vitals (简化版)
+  if(window.PerformanceObserver){
+    try{new PerformanceObserver(l=>{l.getEntries().forEach(e=>{if(e.entryType==='largest-contentful-paint')fetch('/api/vitals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'LCP',value:e.startTime,page:location.pathname,ua:navigator.userAgent})})})}).observe({type:'largest-contentful-paint',buffered:true})}catch{}
+    try{new PerformanceObserver(l=>{l.getEntries().forEach(e=>{if(!e.hadRecentInput)fetch('/api/vitals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'CLS',value:e.value,page:location.pathname,ua:navigator.userAgent})})})}).observe({type:'layout-shift',buffered:true})}catch{}
+    try{new PerformanceObserver(l=>{l.getEntries().forEach(e=>{fetch('/api/vitals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:'FID',value:e.processingStart-e.startTime,page:location.pathname,ua:navigator.userAgent})})})}).observe({type:'first-input',buffered:true})}catch{}
+  }
+}).catch(err=>{
+  console.error('加载失败:',err);
+  $('#hero-name').textContent='加载失败';
+});
+</script>
+</body>
+</html>
