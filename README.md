@@ -4,6 +4,21 @@
 
 ## 一键部署
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FXiaoQius%2FXUSN-PAGE)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2FXiaoQius%2FXUSN-PAGE)
+
+### Vercel
+
+1. 把仓库导入 Vercel。
+2. Vercel 会读取 `vercel.json`：
+   - Build Command: `npm run build`
+   - Output Directory: `public`
+3. 点击 Deploy 即可。
+
+也可以使用命令行：
+
+## 一键部署
+
 ### Vercel
 
 1. 把仓库导入 Vercel。
