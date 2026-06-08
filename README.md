@@ -2,12 +2,22 @@
 
 一个已经改造成纯静态部署的个人主页。现在不依赖 Node 后端、SQLite 或服务器常驻进程，可以直接部署到 **Cloudflare Pages** 或 **Vercel**。
 
-> 说明：下面的按钮默认指向 `https://github.com/XiaoQius/XUSN-PAGE`。如果你 fork 或改名了仓库，请把按钮链接里的仓库地址替换成你自己的 GitHub 仓库地址。
-
 ## 一键部署
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FXiaoQius%2FXUSN-PAGE)
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2FXiaoQius%2FXUSN-PAGE)
+
+### Vercel
+
+1. 把仓库导入 Vercel。
+2. Vercel 会读取 `vercel.json`：
+   - Build Command: `npm run build`
+   - Output Directory: `public`
+3. 点击 Deploy 即可。
+
+也可以使用命令行：
+
+## 一键部署
 
 ### Vercel
 
